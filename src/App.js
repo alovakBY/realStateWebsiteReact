@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+// import { Route } from "react-router-dom";
+import store from "./redux/store";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [name, setName] = useState(store.getState().name);
+    const [inputData, setInputData] = useState("");
+
+    function changeInputData(e) {
+        setInputData(e.target.value);
+    }
+
+    function getName() {
+        store.dispatch({
+            type: "CHANGE_NAME",
+            value: inputData,
+        });
+        setName(store.getState().name);
+    }
+
+    return (
+        <div className="App">
+            <input
+                type="text"
+                value={inputData}
+                onChange={changeInputData}
+            ></input>
+            <br />
+            <button onClick={getName}>Сменить имя</button>
+            <br />
+            {name}
+        </div>
+    );
 }
 
 export default App;
